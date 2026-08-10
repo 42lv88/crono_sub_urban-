@@ -402,12 +402,9 @@
 
   <header class="app-header">
     <div class="logo">
-      <div class="frog-emblem">🐸</div>
-      <div class="title-stack">
-        <h1 class="font-serif">A Frog in the Fall</h1>
-        <span class="sub-title font-hand">ChronoSync Storybook Edition</span>
-      </div>
-      <span class="version-tag">Linnea Sterte Theme</span>
+      <Sparkles size={24} class="logo-icon" />
+      <h1>ChronoSync</h1>
+      <span class="version-tag">RTDB</span>
     </div>
 
     <!-- View Switcher Navigation Tabs -->
@@ -418,7 +415,7 @@
         on:click={() => activeTab = 'timer'}
       >
         <Clock size={16} />
-        <span class="font-serif">Chapter I: Timer & Quests</span>
+        <span>Timer & Targets</span>
       </button>
 
       <button
@@ -427,7 +424,7 @@
         on:click={() => activeTab = 'analytics'}
       >
         <BarChart2 size={16} />
-        <span class="font-serif">Chapter II: Journey Logs</span>
+        <span>Analytics & Heatmap</span>
       </button>
     </nav>
 
@@ -454,18 +451,6 @@
     </div>
   </header>
 
-  <!-- Storybook Hero Banner -->
-  <div class="storybook-hero-card">
-    <div class="hero-art-wrapper">
-      <img src="/assets/frog_in_the_fall.png" alt="A Frog in the Fall by Linnea Sterte" class="hero-art-img" />
-    </div>
-    <div class="hero-text-content">
-      <span class="hero-badge font-hand">🍂 A Journey Through Autumn</span>
-      <h2 class="font-serif">"Slow down and observe the quiet moments."</h2>
-      <p class="hero-quote">Inspired by Linnea Sterte's graphic novel. Real-time focus sessions & daily target journaling across the autumn landscape.</p>
-    </div>
-  </div>
-
   <div class="app-container">
     <RoomManager
       currentRoomId={roomId}
@@ -477,11 +462,11 @@
     {#if activeTab === 'timer'}
       <div class="app-workspace-grid">
         <!-- Left Column: Timer Section -->
-        <section class="timer-section story-card">
+        <section class="timer-section">
           <div class="timer-section-header">
             <button class="btn-fullscreen-launch" on:click={toggleFullscreen} title="Full Screen Mode">
               <Maximize2 size={14} />
-              <span>Full Screen Focus</span>
+              <span>Full Screen</span>
             </button>
           </div>
 
@@ -557,14 +542,14 @@
       <!-- Top Fullscreen Navbar -->
       <div class="fs-navbar">
         <div class="fs-logo">
-          <span class="fs-frog-icon">🐸</span>
-          <span class="fs-brand font-serif">A Frog in the Fall</span>
+          <Sparkles size={22} class="logo-icon" />
+          <span class="fs-brand">ChronoSync</span>
           <span class="fs-room-tag">#{roomId}</span>
         </div>
 
         <div class="fs-actions">
           <button
-            class="fs-btn font-serif"
+            class="fs-btn"
             class:active={showFullscreenTargets}
             on:click={() => showFullscreenTargets = !showFullscreenTargets}
             title="Toggle Daily Targets Drawer"
@@ -581,7 +566,7 @@
             {/if}
           </button>
 
-          <button class="fs-btn btn-exit-fs font-serif" on:click={toggleFullscreen} title="Exit Full Screen (Esc)">
+          <button class="fs-btn btn-exit-fs" on:click={toggleFullscreen} title="Exit Full Screen (Esc)">
             <Minimize2 size={16} />
             <span>Exit Fullscreen</span>
           </button>
@@ -651,32 +636,32 @@
     align-items: center;
     position: relative;
     overflow-x: hidden;
-    background-color: var(--bg-dark);
-    color: var(--text-primary);
-    font-family: var(--font-sans);
+    background-color: #090d16;
+    color: #f8fafc;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
   }
 
   .ambient-backdrop {
     position: absolute;
-    top: 25%;
+    top: 20%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 700px;
-    height: 700px;
-    background: radial-gradient(circle, rgba(59, 130, 246, 0.18) 0%, rgba(217, 119, 6, 0.08) 50%, rgba(0, 0, 0, 0) 75%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(255, 62, 0, 0.15) 0%, rgba(0, 242, 254, 0.05) 50%, rgba(0, 0, 0, 0) 70%);
     pointer-events: none;
     z-index: 0;
     transition: all 1s ease;
-    filter: blur(50px);
+    filter: blur(40px);
   }
 
   .ambient-backdrop.running {
-    background: radial-gradient(circle, rgba(96, 165, 250, 0.25) 0%, rgba(52, 211, 153, 0.1) 50%, rgba(0, 0, 0, 0) 75%);
+    background: radial-gradient(circle, rgba(0, 242, 254, 0.2) 0%, rgba(79, 172, 254, 0.08) 50%, rgba(0, 0, 0, 0) 70%);
     transform: translate(-50%, -45%) scale(1.15);
   }
 
   .ambient-backdrop.completed {
-    background: radial-gradient(circle, rgba(52, 211, 153, 0.3) 0%, rgba(217, 119, 6, 0.12) 50%, rgba(0, 0, 0, 0) 75%);
+    background: radial-gradient(circle, rgba(56, 239, 125, 0.25) 0%, rgba(17, 153, 142, 0.1) 50%, rgba(0, 0, 0, 0) 70%);
   }
 
   .app-header {
@@ -685,7 +670,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1.5rem 1.5rem 0.5rem 1.5rem;
+    padding: 1.5rem 1.5rem;
     z-index: 10;
     gap: 1rem;
     flex-wrap: wrap;
@@ -694,118 +679,40 @@
   .logo {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 0.5rem;
   }
 
-  .frog-emblem {
-    font-size: 1.8rem;
-    background: rgba(59, 130, 246, 0.15);
-    border: 1px solid rgba(96, 165, 250, 0.3);
-    border-radius: 12px;
-    width: 44px;
-    height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  }
-
-  .title-stack {
-    display: flex;
-    flex-direction: column;
+  :global(.logo-icon) {
+    color: #ff3e00;
   }
 
   h1 {
-    font-size: 1.45rem;
-    font-weight: 700;
+    font-size: 1.35rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
     margin: 0;
-    color: var(--accent-cream);
-    letter-spacing: -0.01em;
-  }
-
-  .sub-title {
-    font-size: 0.95rem;
-    color: var(--accent-risograph);
-    margin-top: -2px;
+    background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 
   .version-tag {
     font-size: 0.65rem;
     font-weight: 700;
-    background: rgba(217, 119, 6, 0.18);
-    color: var(--accent-autumn-light);
-    border: 1px solid rgba(217, 119, 6, 0.35);
-    padding: 0.2rem 0.55rem;
-    border-radius: 8px;
+    background: rgba(255, 62, 0, 0.15);
+    color: #ff6b4a;
+    border: 1px solid rgba(255, 62, 0, 0.3);
+    padding: 0.15rem 0.45rem;
+    border-radius: 6px;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  /* Storybook Hero Banner */
-  .storybook-hero-card {
-    width: 100%;
-    max-width: 1100px;
-    margin: 1rem 1.5rem 1.5rem 1.5rem;
-    background: linear-gradient(135deg, rgba(20, 33, 54, 0.85) 0%, rgba(10, 18, 30, 0.95) 100%);
-    border: 1px solid rgba(74, 118, 168, 0.4);
-    border-radius: 20px;
-    padding: 1.25rem 1.5rem;
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    z-index: 10;
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
-    overflow: hidden;
-  }
-
-  .hero-art-wrapper {
-    width: 110px;
-    height: 110px;
-    border-radius: 14px;
-    overflow: hidden;
-    border: 2px solid rgba(96, 165, 250, 0.4);
-    flex-shrink: 0;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
-  }
-
-  .hero-art-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .hero-text-content {
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
-  }
-
-  .hero-badge {
-    font-size: 1rem;
-    color: var(--accent-autumn-light);
-  }
-
-  .hero-text-content h2 {
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin: 0;
-    color: var(--accent-cream);
-    font-style: italic;
-  }
-
-  .hero-quote {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    margin: 0;
-    line-height: 1.4;
   }
 
   .view-nav {
     display: flex;
-    background: rgba(10, 18, 30, 0.7);
-    border: 1px solid rgba(74, 118, 168, 0.3);
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 9999px;
-    padding: 4px;
+    padding: 3px;
     gap: 4px;
   }
 
@@ -813,25 +720,25 @@
     display: flex;
     align-items: center;
     gap: 6px;
-    padding: 0.45rem 1rem;
+    padding: 0.4rem 0.85rem;
     border-radius: 9999px;
     border: none;
     background: transparent;
-    color: var(--text-muted);
-    font-size: 0.875rem;
+    color: #94a3b8;
+    font-size: 0.825rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
   }
 
   .nav-tab:hover {
-    color: var(--text-primary);
+    color: #ffffff;
   }
 
   .nav-tab.active {
-    background: rgba(59, 130, 246, 0.25);
-    color: var(--accent-risograph);
-    border: 1px solid rgba(96, 165, 250, 0.4);
+    background: rgba(255, 62, 0, 0.2);
+    color: #ff6b4a;
+    border: 1px solid rgba(255, 62, 0, 0.35);
   }
 
   .header-right-actions {
@@ -855,9 +762,9 @@
   }
 
   .action-btn:hover {
-    background: rgba(59, 130, 246, 0.2);
-    color: var(--accent-risograph);
-    border-color: rgba(96, 165, 250, 0.4);
+    background: rgba(255, 62, 0, 0.2);
+    color: #ff6b4a;
+    border-color: rgba(255, 62, 0, 0.35);
   }
 
   .timer-section-header {
@@ -871,22 +778,21 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    background: rgba(59, 130, 246, 0.12);
-    border: 1px solid rgba(96, 165, 250, 0.25);
-    color: var(--accent-risograph);
-    font-size: 0.775rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #94a3b8;
+    font-size: 0.75rem;
     font-weight: 600;
-    padding: 0.35rem 0.75rem;
+    padding: 0.3rem 0.65rem;
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.2s ease;
-    font-family: var(--font-serif);
   }
 
   .btn-fullscreen-launch:hover {
-    background: rgba(59, 130, 246, 0.25);
-    color: #ffffff;
-    border-color: rgba(96, 165, 250, 0.5);
+    background: rgba(255, 62, 0, 0.15);
+    color: #ff6b4a;
+    border-color: rgba(255, 62, 0, 0.3);
   }
 
   /* FULLSCREEN IMMERSIVE OVERLAY */
@@ -896,7 +802,7 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: #08101a;
+    background: #060911;
     z-index: 9999;
     display: flex;
     flex-direction: column;
@@ -908,17 +814,17 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 950px;
-    height: 950px;
-    background: radial-gradient(circle, rgba(59, 130, 246, 0.22) 0%, rgba(217, 119, 6, 0.1) 50%, rgba(0, 0, 0, 0) 75%);
+    width: 900px;
+    height: 900px;
+    background: radial-gradient(circle, rgba(255, 62, 0, 0.2) 0%, rgba(0, 242, 254, 0.08) 50%, rgba(0, 0, 0, 0) 75%);
     pointer-events: none;
     z-index: 0;
-    filter: blur(70px);
+    filter: blur(60px);
     transition: all 1s ease;
   }
 
   .fs-ambient-backdrop.running {
-    background: radial-gradient(circle, rgba(96, 165, 250, 0.3) 0%, rgba(52, 211, 153, 0.12) 50%, rgba(0, 0, 0, 0) 75%);
+    background: radial-gradient(circle, rgba(0, 242, 254, 0.28) 0%, rgba(79, 172, 254, 0.12) 50%, rgba(0, 0, 0, 0) 75%);
     transform: translate(-50%, -50%) scale(1.2);
   }
 
@@ -929,33 +835,31 @@
     align-items: center;
     justify-content: space-between;
     padding: 1.25rem 2rem;
-    background: rgba(10, 18, 30, 0.65);
-    backdrop-filter: blur(16px);
-    border-bottom: 1px solid rgba(74, 118, 168, 0.25);
+    background: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   }
 
   .fs-logo {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-  }
-
-  .fs-frog-icon {
-    font-size: 1.6rem;
+    gap: 0.6rem;
   }
 
   .fs-brand {
-    font-size: 1.35rem;
-    font-weight: 700;
-    color: var(--accent-cream);
+    font-size: 1.25rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 
   .fs-room-tag {
     font-size: 0.75rem;
     font-weight: 700;
-    color: var(--accent-risograph);
-    background: rgba(59, 130, 246, 0.15);
-    border: 1px solid rgba(96, 165, 250, 0.3);
+    color: #ff6b4a;
+    background: rgba(255, 62, 0, 0.15);
+    border: 1px solid rgba(255, 62, 0, 0.3);
     padding: 0.2rem 0.55rem;
     border-radius: 6px;
   }
@@ -987,19 +891,19 @@
   }
 
   .fs-btn.active {
-    background: rgba(59, 130, 246, 0.25);
-    color: var(--accent-risograph);
-    border-color: rgba(96, 165, 250, 0.4);
+    background: rgba(255, 62, 0, 0.2);
+    color: #ff6b4a;
+    border-color: rgba(255, 62, 0, 0.4);
   }
 
   .btn-exit-fs {
-    background: rgba(217, 119, 6, 0.18);
-    color: var(--accent-autumn-light);
-    border-color: rgba(217, 119, 6, 0.35);
+    background: rgba(255, 62, 0, 0.15);
+    color: #ff6b4a;
+    border-color: rgba(255, 62, 0, 0.35);
   }
 
   .btn-exit-fs:hover {
-    background: rgba(217, 119, 6, 0.35);
+    background: rgba(255, 62, 0, 0.3);
     color: white;
   }
 
