@@ -1,18 +1,25 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..700;1,6..72,400..700&family=Patrick+Hand&family=Inter:wght@400;500;600;700;800&display=swap');
 
 :root {
-  --bg-dark: #090d16;
-  --bg-card: rgba(15, 23, 42, 0.6);
-  --border-card: rgba(255, 255, 255, 0.08);
+  --bg-dark: #0a121e;
+  --bg-card: rgba(20, 33, 54, 0.75);
+  --border-card: rgba(74, 118, 168, 0.35);
 
-  --accent-orange: #ff3e00;
-  --accent-cyan: #00f2fe;
-  --accent-purple: #9d4edd;
-  --accent-green: #10b981;
+  --accent-ink: #3b82f6;
+  --accent-risograph: #60a5fa;
+  --accent-autumn: #d97706;
+  --accent-autumn-light: #f59e0b;
+  --accent-moss: #34d399;
+  --accent-cream: #f7f4eb;
 
-  --text-primary: #ffffff;
+  --text-primary: #f7f4eb;
   --text-secondary: #cbd5e1;
   --text-muted: #94a3b8;
+  --text-hand: #fef08a;
+
+  --font-serif: 'Newsreader', Georgia, serif;
+  --font-hand: 'Patrick Hand', cursive, sans-serif;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
 *, *::before, *::after {
@@ -24,26 +31,43 @@ body {
   padding: 0;
   background-color: var(--bg-dark);
   color: var(--text-primary);
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom Scrollbar */
+h1, h2, h3, .font-serif {
+  font-family: var(--font-serif);
+}
+
+.font-hand {
+  font-family: var(--font-hand);
+}
+
+/* Storybook parchment card effect */
+.story-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border-card);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* Custom Risograph Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(15, 23, 42, 0.5);
+  background: rgba(10, 18, 30, 0.6);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(74, 118, 168, 0.4);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(96, 165, 250, 0.6);
 }

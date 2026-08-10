@@ -100,11 +100,11 @@
   }
 </script>
 
-<div class="todo-panel">
+<div class="todo-panel story-card">
   <div class="panel-header">
     <div class="title-group">
       <Target size={20} class="icon-target" />
-      <h3>Daily Targets</h3>
+      <h3 class="font-serif">Traveler's Daily Targets</h3>
       <span class="count-badge">{completedTodos}/{totalTodos}</span>
     </div>
 
@@ -128,7 +128,7 @@
       <input
         type="text"
         bind:value={searchQuery}
-        placeholder="Filter targets or #tags..."
+        placeholder="Filter journal or #tags..."
         class="search-input"
       />
     </div>
@@ -160,7 +160,7 @@
     <input
       type="text"
       bind:value={newTodoText}
-      placeholder="Add target (use #tag like #Code, #Study)..."
+      placeholder="Write a target (e.g. Read chapter 3 #Study, Walks #Nature)..."
       class="todo-input"
     />
     <button type="submit" class="add-btn" disabled={!newTodoText.trim()}>
@@ -173,8 +173,8 @@
     {#if filteredTodos.length === 0}
       <div class="empty-state">
         <Sparkles size={24} class="icon-empty" />
-        <p>No matching targets found.</p>
-        <span class="sub-empty">Add a target using #tag syntax (e.g. "Complete report #Work")!</span>
+        <p class="font-serif">No journal entries found.</p>
+        <span class="sub-empty">Record your daily quests & autumn observations with #tags!</span>
       </div>
     {:else}
       {#each filteredTodos as item (item.id)}
@@ -188,14 +188,14 @@
           </button>
 
           <div class="todo-content">
-            <span class="todo-text" on:click={() => toggleTodo(item.id)}>
+            <span class="todo-text font-serif" on:click={() => toggleTodo(item.id)}>
               {item.text}
             </span>
 
             {#if item.tags && item.tags.length > 0}
               <div class="item-tags">
                 {#each item.tags as tag}
-                  <span class="tag-pill" on:click={() => selectedTagFilter = tag}>
+                  <span class="tag-pill font-hand" on:click={() => selectedTagFilter = tag}>
                     #{tag}
                   </span>
                 {/each}

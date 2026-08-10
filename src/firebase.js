@@ -111,6 +111,19 @@ const broadcastChannel = typeof window !== "undefined" && window.BroadcastChanne
   : null;
 
 const localRoomStateCache = {};
+const localSubscribers = {};
+
+function notifyLocalSubscribers(roomId, payload) {
+  if (localSubscribers[roomId]) {
+    localSubscribers[roomId].forEach(cb => {
+      try {
+        cb(payload);
+      } catch (e) {
+        console.error("Error in local room subscriber callback:", e);
+      }
+    });
+  }
+}
 
 // --- ROOM SYNC FUNCTIONS ---
 
@@ -124,6 +137,15 @@ export async function updateRoomState(roomId, timerData) {
     updatedAt: Date.now()
   };
 
+  // 1. Immediately update local state cache & notify local subscribers in current window
+  localRoomStateCache[roomId] = payload;
+  try {
+    localStorage.setItem(`timer_room_${roomId}`, JSON.stringify(payload));
+  } catch (e) {}
+
+  notifyLocalSubscribers(roomId, payload);
+
+  // 2. Sync to Firebase Realtime Database if connected
   if (isUsingFirebase() && databaseInstance) {
     try {
       const timerRef = ref(databaseInstance, roomPath);
@@ -134,12 +156,7 @@ export async function updateRoomState(roomId, timerData) {
     }
   }
 
-  // Fallback broadcast sync
-  localRoomStateCache[roomId] = payload;
-  try {
-    localStorage.setItem(`timer_room_${roomId}`, JSON.stringify(payload));
-  } catch (e) {}
-
+  // 3. Broadcast to other tabs on the same origin
   if (broadcastChannel) {
     broadcastChannel.postMessage({ roomId, payload });
   }
@@ -149,6 +166,11 @@ export async function updateRoomState(roomId, timerData) {
  * Listen to real-time updates for a specific room
  */
 export function subscribeToRoom(roomId, callback) {
+  if (!localSubscribers[roomId]) {
+    localSubscribers[roomId] = new Set();
+  }
+  localSubscribers[roomId].add(callback);
+
   let unsubscribeFirebase = null;
 
   if (isUsingFirebase() && databaseInstance) {
@@ -165,7 +187,7 @@ export function subscribeToRoom(roomId, callback) {
     }
   }
 
-  // Broadcast channel listener fallback
+  // Broadcast channel listener fallback for other tabs
   const handleBroadcast = (event) => {
     if (event.data && event.data.roomId === roomId) {
       callback(event.data.payload);
@@ -176,15 +198,24 @@ export function subscribeToRoom(roomId, callback) {
     broadcastChannel.addEventListener("message", handleBroadcast);
   }
 
-  // Check local storage initial state
-  try {
-    const cached = localStorage.getItem(`timer_room_${roomId}`);
-    if (cached) {
-      callback(JSON.parse(cached));
-    }
-  } catch (e) {}
+  // Initial state check (cache or localStorage)
+  if (localRoomStateCache[roomId]) {
+    callback(localRoomStateCache[roomId]);
+  } else {
+    try {
+      const cached = localStorage.getItem(`timer_room_${roomId}`);
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        localRoomStateCache[roomId] = parsed;
+        callback(parsed);
+      }
+    } catch (e) {}
+  }
 
   return () => {
+    if (localSubscribers[roomId]) {
+      localSubscribers[roomId].delete(callback);
+    }
     if (unsubscribeFirebase) unsubscribeFirebase();
     if (broadcastChannel) {
       broadcastChannel.removeEventListener("message", handleBroadcast);

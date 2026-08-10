@@ -6,6 +6,7 @@
   export let mode = 'countdown'; // 'countdown' | 'pomodoro' | 'stopwatch'
   export let pomodoroPhase = 'focus'; // 'focus' | 'shortBreak' | 'longBreak'
   export let title = '';
+  export let isFullScreen = false;
 
   $: totalSeconds = Math.max(0, Math.floor(timeRemainingMs / 1000));
   $: hours = Math.floor(totalSeconds / 3600);
@@ -25,22 +26,22 @@
       : 0;
 
   // SVG parameters
-  const size = 320;
-  const strokeWidth = 14;
-  const center = size / 2;
-  const radius = center - strokeWidth - 4;
-  const circumference = 2 * Math.PI * radius;
+  $: size = isFullScreen ? 440 : 320;
+  $: strokeWidth = isFullScreen ? 18 : 14;
+  $: center = size / 2;
+  $: radius = center - strokeWidth - 6;
+  $: circumference = 2 * Math.PI * radius;
 
   $: dashOffset = circumference * (1 - progressRatio);
 
   // Status label & accent class
   $: statusLabel = isRunning 
-    ? (mode === 'stopwatch' ? 'Counting Up' : 'Ticking Down') 
+    ? (mode === 'stopwatch' ? 'Journeying Ahead' : 'Focus Flow') 
     : isPaused 
-      ? 'Paused' 
+      ? 'Resting' 
       : timeRemainingMs === 0 && totalDurationMs > 0 && mode !== 'stopwatch'
-        ? 'Completed 🎉'
-        : 'Ready';
+        ? 'Chapter Complete 🍂'
+        : 'Ready to Begin';
 
   $: accentClass = mode === 'pomodoro'
     ? (pomodoroPhase === 'focus' ? 'theme-focus' : 'theme-break')
@@ -51,39 +52,39 @@
         : 'theme-idle';
 </script>
 
-<div class="timer-display-container {accentClass}">
-  <div class="svg-wrapper">
+<div class="timer-display-container {accentClass}" class:fullscreen={isFullScreen}>
+  <div class="svg-wrapper" style="width: {size}px; height: {size}px;">
     <svg width={size} height={size} viewBox="0 0 {size} {size}">
       <defs>
-        <!-- Dynamic Gradient Definitions -->
+        <!-- Linnea Sterte Risograph & Autumn Color Gradients -->
         <linearGradient id="gradient-active" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#00f2fe" />
-          <stop offset="100%" stop-color="#4facfe" />
+          <stop offset="0%" stop-color="#93c5fd" />
+          <stop offset="100%" stop-color="#3b82f6" />
         </linearGradient>
 
         <linearGradient id="gradient-paused" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#f6d365" />
-          <stop offset="100%" stop-color="#fda085" />
+          <stop offset="0%" stop-color="#fbbf24" />
+          <stop offset="100%" stop-color="#d97706" />
         </linearGradient>
 
         <linearGradient id="gradient-focus" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#ff0844" />
-          <stop offset="100%" stop-color="#ffb199" />
+          <stop offset="0%" stop-color="#f87171" />
+          <stop offset="100%" stop-color="#c85a32" />
         </linearGradient>
 
         <linearGradient id="gradient-break" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#b19ffb" />
-          <stop offset="100%" stop-color="#6930c3" />
+          <stop offset="0%" stop-color="#6ee7b7" />
+          <stop offset="100%" stop-color="#059669" />
         </linearGradient>
 
         <linearGradient id="gradient-completed" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#11998e" />
-          <stop offset="100%" stop-color="#38ef7d" />
+          <stop offset="0%" stop-color="#34d399" />
+          <stop offset="100%" stop-color="#60a5fa" />
         </linearGradient>
 
-        <!-- Drop Shadow / Glow Filter -->
+        <!-- Risograph Glow Filter -->
         <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-          <feGaussianBlur stdDeviation="8" result="blur" />
+          <feGaussianBlur stdDeviation="6" result="blur" />
           <feComposite in="SourceGraphic" in2="blur" operator="over" />
         </filter>
       </defs>
@@ -115,7 +116,7 @@
     <div class="timer-center-content">
       {#if mode === 'pomodoro'}
         <span class="badge phase-badge">
-          {pomodoroPhase === 'focus' ? '🔥 Focus Session' : '☕ Break Time'}
+          {pomodoroPhase === 'focus' ? '🍂 Autumn Focus' : (pomodoroPhase === 'longBreak' ? '🏕️ Fireside Rest' : '🍵 Quiet Pond Break')}
         </span>
       {:else}
         <span class="badge status-badge">{statusLabel}</span>
@@ -241,6 +242,10 @@
     align-items: baseline;
   }
 
+  .fullscreen .time-digits {
+    font-size: 5rem;
+  }
+
   .time-digits.pulse {
     animation: gentle-pulse 2s infinite ease-in-out;
   }
@@ -255,6 +260,15 @@
     opacity: 0.6;
     margin-left: 2px;
     font-weight: 600;
+  }
+
+  .fullscreen .tenths {
+    font-size: 2rem;
+  }
+
+  .fullscreen .badge {
+    font-size: 1rem;
+    padding: 0.4rem 1.1rem;
   }
 
   .sep {
