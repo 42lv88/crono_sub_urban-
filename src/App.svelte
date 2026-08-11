@@ -214,12 +214,25 @@
     if (soundEnabled) playClickSound();
     alarmFired = false;
 
+    let updatedHistory = roomState.activityHistory;
+    let addedSeconds = 0;
+
+    if (roomState.mode === 'stopwatch' && timeRemainingMs >= 60000) {
+      const elapsedMins = Math.floor(timeRemainingMs / 60000);
+      if (elapsedMins > 0) {
+        updatedHistory = recordActivity(elapsedMins, 0);
+        addedSeconds = elapsedMins * 60;
+      }
+    }
+
     updateRoomState(roomId, {
       ...roomState,
       status: 'idle',
       targetTime: null,
       startTime: null,
-      pausedRemainingMs: roomState.durationMs
+      pausedRemainingMs: roomState.mode === 'stopwatch' ? 0 : roomState.durationMs,
+      activityHistory: updatedHistory || roomState.activityHistory || {},
+      totalFocusSeconds: (roomState.totalFocusSeconds || 0) + addedSeconds
     });
   }
 
